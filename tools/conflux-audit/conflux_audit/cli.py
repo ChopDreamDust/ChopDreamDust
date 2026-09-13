@@ -14,7 +14,7 @@ def main(argv=None) -> int:
     if args.format == "json":
         print(json.dumps(result.to_dict(), indent=2, ensure_ascii=False))
     else:
-        print(f"Conflux Audit | score={result.score} | files={result.files_scanned} | errors={result.errors} | warnings={result.warnings}")
+        print(f"Conflux Audit | files={result.files_scanned} | errors={result.errors} | warnings={result.warnings}")
         for f in result.findings:
             suffix = f" | {f.evidence}" if f.evidence else ""
             print(f"[{f.severity.upper()}] {f.rule} {f.path}: {f.message}{suffix}")
