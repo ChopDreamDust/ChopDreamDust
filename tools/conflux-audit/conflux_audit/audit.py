@@ -26,11 +26,6 @@ class AuditResult:
     findings: list[Finding]
 
     @property
-    def score(self) -> int:
-        penalties = {"error": 20, "warning": 8, "info": 0}
-        return max(0, 100 - sum(penalties[f.severity] for f in self.findings))
-
-    @property
     def errors(self) -> int:
         return sum(f.severity == "error" for f in self.findings)
 
@@ -39,7 +34,7 @@ class AuditResult:
         return sum(f.severity == "warning" for f in self.findings)
 
     def to_dict(self):
-        return {"root": self.root, "files_scanned": self.files_scanned, "score": self.score,
+        return {"root": self.root, "files_scanned": self.files_scanned,
                 "errors": self.errors, "warnings": self.warnings,
                 "findings": [f.to_dict() for f in self.findings]}
 
@@ -70,7 +65,7 @@ def audit_repo(root: str | Path) -> AuditResult:
         if re.search(r"\bTODO\b|\bTBD\b|coming soon", text, re.I):
             findings.append(Finding("DOC-003", "warning", rel(readme), "README contains unresolved placeholder language."))
 
-    test_files = [p for p, _ in files if p.name.startswith("test_") or p.name.endswith("_test.py") or "/tests/" in str(p)]
+    test_files = [p for p, _ in files if p.name.startswith("test_") or p.name.endswith("_test.py") or "tests" in p.parts]
     if not test_files:
         findings.append(Finding("TEST-001", "error", "", "No recognizable test files found."))
 
