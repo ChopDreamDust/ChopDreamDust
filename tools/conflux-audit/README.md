@@ -14,17 +14,29 @@ This is a preflight tool. It does not prove that a project works or replace huma
 
 ## Usage
 
+Run directly from the tool directory:
+
 ```bash
+cd tools/conflux-audit
 python -m conflux_audit .
 python -m conflux_audit . --format json
 python -m conflux_audit . --fail-on warning
 ```
 
-No network access is required.
+Or install the local package:
+
+```bash
+cd tools/conflux-audit
+python -m pip install -e .
+conflux-audit .
+```
+
+No network access is required at runtime.
 
 ## Development
 
 ```bash
+cd tools/conflux-audit
 python -m unittest discover -s tests -v
 ```
 
